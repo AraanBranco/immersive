@@ -5,6 +5,7 @@
   "user_sharding": false,
   "shard_id": 0,
   "shard_count": 0,
+  "localdb": "./db/badger",
   "cities": [
     "cityrp",
     "samplerp"

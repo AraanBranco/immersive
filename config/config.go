@@ -14,6 +14,7 @@ type Config struct {
 	ShardID      int      `json:"shard_id"`
 	ShardCount   int      `json:"shard_count"`
 	Cities       []string `json:"cities"`
+	LocalDB      string   `json:"localdb"`
 }
 
 func LoadConfig(filename string) *Config {

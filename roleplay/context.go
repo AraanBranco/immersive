@@ -5,6 +5,7 @@ import (
 
 	cfg "github.com/AraanBranco/immersive/config"
 	"github.com/bwmarrin/discordgo"
+	badgerhold "github.com/timshannon/badgerhold"
 )
 
 type Context struct {
@@ -16,11 +17,12 @@ type Context struct {
 	Args        []string
 
 	Conf       *cfg.Config
+	DB         *badgerhold.Store
 	CmdHandler *CommandHandler
 }
 
 func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel *discordgo.Channel,
-	user *discordgo.User, message *discordgo.MessageCreate, conf *cfg.Config, cmdHandler *CommandHandler) *Context {
+	user *discordgo.User, message *discordgo.MessageCreate, conf *cfg.Config, db *badgerhold.Store, cmdHandler *CommandHandler) *Context {
 	ctx := new(Context)
 	ctx.Discord = discord
 	ctx.Guild = guild
@@ -29,6 +31,7 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 	ctx.Message = message
 	ctx.Conf = conf
 	ctx.CmdHandler = cmdHandler
+	ctx.DB = db
 	return ctx
 }
 

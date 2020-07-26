@@ -33,54 +33,54 @@ func OutfitCommand(ctx Context) {
 	if len(ctx.Args) == 0 {
 		ctx.Reply("Para saber mais sobre os comandos digite: `!outfit <cidade> <org>`")
 		return
-	} else {
-		// Get struct for city
-		outfits := getOutfit(ctx.Args[0])
-		allowCommands := allCommands(*outfits)
-		sort.Strings(allowCommands)
+	}
 
-		// Check if exist ORG
-		if !contains(allowCommands, ctx.Args[1]) {
-			msg := fmt.Sprintf("Outfit não existe, tente um desses: `%s`", strings.Join(allowCommands[:], ", "))
-			ctx.Reply(msg)
-			return
-		}
+	// Get struct for city
+	outfits := getOutfit(ctx.Args[0])
+	allowCommands := allCommands(*outfits)
+	sort.Strings(allowCommands)
 
-		selectOutfit := strings.Title(ctx.Args[1])
-		rv := reflect.ValueOf(&outfits).Elem().Elem().FieldByName(selectOutfit).Addr()
-		outfit := rv.Interface().(*[]DefaultStruct)
-		// Valid if exist outfir for ORG
-		if len(*outfit) == 0 {
-			ctx.Reply("Nenhum outfit disponível para essa ORG")
-			return
-		}
+	// Check if exist ORG
+	if len(ctx.Args) <= 1 || !contains(allowCommands, ctx.Args[1]) {
+		msg := fmt.Sprintf("Outfit não existe, tente um desses: `%s`", strings.Join(allowCommands[:], ", "))
+		ctx.Reply(msg)
+		return
+	}
 
-		// Mount messages with outfits
-		ctx.Reply(fmt.Sprintf("Outfits para %s: \n", selectOutfit))
-		for _, item := range *outfit {
-			buff := bytes.NewBufferString("```")
-			allStruct := reflect.ValueOf(item)
-			img := ""
-			for i := 0; i < allStruct.NumField(); i++ {
-				field := allStruct.Type().Field(i)
-				value := allStruct.Field(i)
-				msg := ""
-				if value.Interface() != "" && field.Name != "Imagem" {
-					msg = fmt.Sprintf("%s: %s\n", field.Name, value.Interface())
-				}
+	selectOutfit := strings.Title(ctx.Args[1])
+	rv := reflect.ValueOf(&outfits).Elem().Elem().FieldByName(selectOutfit).Addr()
+	outfit := rv.Interface().(*[]DefaultStruct)
+	// Valid if exist outfir for ORG
+	if len(*outfit) == 0 {
+		ctx.Reply("Nenhum outfit disponível para essa ORG")
+		return
+	}
 
-				if field.Name == "Imagem" {
-					img = fmt.Sprintf("%s \n", value.Interface())
-				}
-				buff.WriteString(msg)
+	// Mount messages with outfits
+	ctx.Reply(fmt.Sprintf("Outfits para %s: \n", selectOutfit))
+	for _, item := range *outfit {
+		buff := bytes.NewBufferString("```")
+		allStruct := reflect.ValueOf(item)
+		img := ""
+		for i := 0; i < allStruct.NumField(); i++ {
+			field := allStruct.Type().Field(i)
+			value := allStruct.Field(i)
+			msg := ""
+			if value.Interface() != "" && field.Name != "Imagem" {
+				msg = fmt.Sprintf("%s: %s\n", field.Name, value.Interface())
 			}
-			buff.WriteString("```")
-			buff.WriteString(img)
-			buff.WriteString("------------------------")
 
-			str2 := buff.String()
-			ctx.Reply(str2)
+			if field.Name == "Imagem" {
+				img = fmt.Sprintf("%s \n", value.Interface())
+			}
+			buff.WriteString(msg)
 		}
+		buff.WriteString("```")
+		buff.WriteString(img)
+		buff.WriteString("------------------------")
+
+		str2 := buff.String()
+		ctx.Reply(str2)
 	}
 }
 

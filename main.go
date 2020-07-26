@@ -7,10 +7,10 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/bwmarrin/discordgo"
-
 	cfg "github.com/AraanBranco/immersive/config"
 	"github.com/AraanBranco/immersive/roleplay"
+	"github.com/bwmarrin/discordgo"
+	badgerhold "github.com/timshannon/badgerhold"
 )
 
 var (
@@ -65,34 +65,50 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 	if user.ID == botId || user.Bot {
 		return
 	}
+
 	content := message.Content
 	if len(content) <= len(PREFIX) {
 		return
 	}
+
 	if content[:len(PREFIX)] != PREFIX {
 		return
 	}
+
 	content = content[len(PREFIX):]
 	if len(content) < 1 {
 		return
 	}
+
 	args := strings.Fields(content)
 	name := strings.ToLower(args[0])
 	command, found := CmdHandler.Get(name)
 	if !found {
 		return
 	}
+
 	channel, err := discord.State.Channel(message.ChannelID)
 	if err != nil {
-		fmt.Println("Error getting channel,", err)
+		fmt.Println("Error getting channel: ", err)
 		return
 	}
+
 	guild, err := discord.State.Guild(channel.GuildID)
 	if err != nil {
-		fmt.Println("Error getting guild,", err)
+		fmt.Println("Error getting guild: ", err)
 		return
 	}
-	ctx := roleplay.NewContext(discord, guild, channel, user, message, conf, CmdHandler)
+
+	optionsDB := badgerhold.DefaultOptions
+	optionsDB.Dir = conf.LocalDB
+	optionsDB.ValueDir = conf.LocalDB
+	db, err := badgerhold.Open(optionsDB)
+	if err != nil {
+		fmt.Println("Error instance db: ", err)
+	}
+	defer db.Close()
+
+	ctx := roleplay.NewContext(discord, guild, channel, user, message, conf, db, CmdHandler)
 	ctx.Args = args[1:]
 	c := *command
 	c(*ctx)
@@ -104,4 +120,5 @@ func registerCommands() {
 	CmdHandler.Register("outfit", roleplay.OutfitCommand, "Para listar os outfits de organizações.")
 	CmdHandler.Register("cidades", roleplay.GetCities, "Lista as cidades disponiveis.")
 	CmdHandler.Register("clear", roleplay.ClearChannel, "Limpa as mensagens do canal (Admin)")
+	CmdHandler.Register("contato", roleplay.ContactCommand, "Comandos criar um contato")
 }

@@ -35,6 +35,7 @@
 # Ignore all local history of files
 .history
 
+db/*
 ## Project
 config.json
 
