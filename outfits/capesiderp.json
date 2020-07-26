@@ -1,0 +1,33 @@
+{
+  "mecanico": [],
+  "ballas": [],
+  "motoclub": [],
+  "corleone": [
+    { 
+      "oculos": "15 4",
+      "jaqueta": "188 6",
+      "acessorios": "31",
+      "maos": "77",
+      "calca": "59 8",
+      "sapatos": "7",
+      "imagem": "https://cdn.discordapp.com/attachments/735417198444806154/736779437303005194/2020-07-25_11.png"
+    },
+    { 
+      "jaqueta": "282 3",
+      "calca": "42 2",
+      "maos": "77",
+      "oculos": "25 4",
+      "sapatos": "57",
+      "imagem": "https://cdn.discordapp.com/attachments/735417198444806154/736780907720999034/2020-07-26.png"
+    },
+    { 
+      "oculos": "15 9",
+      "acessorios": "31",
+      "jaqueta": "220 22",
+      "calca": "59 8",
+      "sapatos": "7",
+      "maos": "75",
+      "imagem": "https://cdn.discordapp.com/attachments/735417198444806154/736781654823141427/2020-07-26_1.png"
+    }
+  ]
+}

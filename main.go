@@ -99,6 +99,9 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 }
 
 func registerCommands() {
-	CmdHandler.Register("help", roleplay.HelpCommand, "Lista de comandos do immersive")
-	CmdHandler.Register("radio", roleplay.RadioCommand, "Gera uma nova frequência para rádio!")
+	CmdHandler.Register("ajuda", roleplay.HelpCommand, "Lista de comandos do immersive.")
+	CmdHandler.Register("radio", roleplay.RadioCommand, "Gera uma nova frequência para rádio.")
+	CmdHandler.Register("outfit", roleplay.OutfitCommand, "Para listar os outfits de organizações.")
+	CmdHandler.Register("cidades", roleplay.GetCities, "Lista as cidades disponiveis.")
+	CmdHandler.Register("clear", roleplay.ClearChannel, "Limpa as mensagens do canal (Admin)")
 }

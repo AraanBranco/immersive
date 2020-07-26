@@ -35,7 +35,7 @@ func NewContext(discord *discordgo.Session, guild *discordgo.Guild, textChannel 
 func (ctx Context) Reply(content string) *discordgo.Message {
 	msg, err := ctx.Discord.ChannelMessageSend(ctx.TextChannel.ID, content)
 	if err != nil {
-		fmt.Println("Error whilst sending message,", err)
+		fmt.Println("Erro ao dar o reply: ", err)
 		return nil
 	}
 	return msg

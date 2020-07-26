@@ -1,0 +1,12 @@
+{
+  "prefix": "!",
+  "discord_token": "Bot you-discord-token",
+  "owner_id": "you-user-id",
+  "user_sharding": false,
+  "shard_id": 0,
+  "shard_count": 0,
+  "cities": [
+    "cityrp",
+    "samplerp"
+  ]
+}
