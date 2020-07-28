@@ -119,6 +119,7 @@ func registerCommands() {
 	CmdHandler.Register("radio", roleplay.RadioCommand, "Gera uma nova frequência para rádio.")
 	CmdHandler.Register("outfit", roleplay.OutfitCommand, "Para listar os outfits de organizações.")
 	CmdHandler.Register("cidades", roleplay.GetCities, "Lista as cidades disponiveis.")
+	CmdHandler.Register("chest", roleplay.ChestCommand, "Contole de itens em baú")
 	CmdHandler.Register("clear", roleplay.ClearChannel, "Limpa as mensagens do canal (Admin)")
 	CmdHandler.Register("contato", roleplay.ContactCommand, "Comandos criar um contato")
 }

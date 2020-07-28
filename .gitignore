@@ -35,8 +35,9 @@
 # Ignore all local history of files
 .history
 
-db/*
 ## Project
+db/*
 config.json
+bin/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,go

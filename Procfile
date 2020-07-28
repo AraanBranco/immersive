@@ -1,1 +1,1 @@
-web: immersive
+web: ./bin/immersive
