@@ -139,7 +139,11 @@ func rmItem(ctx Context) string {
 			fmt.Println("Erro ao remover item: ", err)
 			return "Ocorreu um erro ao remover o item!"
 		}
-		return fmt.Sprintf("``` %v removido do Chest ```", name)
+		msg = fmt.Sprintf("``` %v removido do Chest ```", name)
+
+		// Send Log to owner discord
+		LogChestToOwner(ctx, msg)
+		return msg
 	}
 
 	if len(ctx.Args) == 3 {
@@ -152,7 +156,11 @@ func rmItem(ctx Context) string {
 				fmt.Println("Erro ao remover item: ", err)
 				return "Ocorreu um erro ao remover o item!"
 			}
-			return fmt.Sprintf("``` %v removido do Chest ```", name)
+			msg = fmt.Sprintf("``` %v removido do Chest ```", name)
+
+			// Send Log to owner discord
+			LogChestToOwner(ctx, msg)
+			return fmt.Sprintf(msg)
 		}
 
 		c := &Chest{

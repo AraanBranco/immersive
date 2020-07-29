@@ -10,7 +10,7 @@ type Config struct {
 	Prefix       string   `json:"prefix"`
 	DiscordToken string   `json:"discord_token"`
 	OwnerId      string   `json:"owner_id"`
-	UseSharding  bool     `json:"owner_id"`
+	UseSharding  bool     `json:"user_sharding"`
 	ShardID      int      `json:"shard_id"`
 	ShardCount   int      `json:"shard_count"`
 	Cities       []string `json:"cities"`
