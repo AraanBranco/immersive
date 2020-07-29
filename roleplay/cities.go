@@ -9,7 +9,7 @@ func GetCities(ctx Context) {
 	buffer := bytes.NewBufferString("Cidades disponíveis: \n")
 
 	buffer.WriteString("```")
-	for _, city := range ctx.Conf.Cities {
+	for _, city := range ctx.Config.GetEnvConfStringSlice("cities") {
 		msg := fmt.Sprintf("- %s \n", city)
 		buffer.WriteString(msg)
 	}

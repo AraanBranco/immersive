@@ -13,7 +13,7 @@ func HelpCommand(ctx Context) {
 			continue
 		}
 
-		msg := fmt.Sprintf("> %s%s - %s\n", ctx.Conf.Prefix, cmdName, cmdStruct.GetHelp())
+		msg := fmt.Sprintf("> %s%s - %s\n", ctx.Config.GetEnvConfString("prefix"), cmdName, cmdStruct.GetHelp())
 		buffer.WriteString(msg)
 	}
 	str := buffer.String()

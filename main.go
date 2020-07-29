@@ -7,22 +7,22 @@ import (
 	"strings"
 	"syscall"
 
-	cfg "github.com/AraanBranco/immersive/config"
+	"github.com/AraanBranco/immersive/config"
 	"github.com/AraanBranco/immersive/roleplay"
 	"github.com/bwmarrin/discordgo"
 	badgerhold "github.com/timshannon/badgerhold"
 )
 
 var (
-	conf       *cfg.Config
-	CmdHandler *roleplay.CommandHandler
-	botId      string
-	PREFIX     string
+	CmdHandler    *roleplay.CommandHandler
+	configuration *config.Configuration
+	botId         string
+	PREFIX        string
 )
 
 func init() {
-	conf = cfg.LoadConfig("config.json")
-	PREFIX = conf.Prefix
+	configuration = config.Get()
+	PREFIX = configuration.GetEnvConfString("prefix")
 }
 
 func main() {
@@ -30,15 +30,15 @@ func main() {
 	registerCommands()
 
 	// Create a new Discord session using the provided bot token.
-	dg, err := discordgo.New(conf.DiscordToken)
+	dg, err := discordgo.New(configuration.GetEnvConfString("discord_token"))
 	if err != nil {
 		fmt.Println("error creating Discord session, ", err)
 		return
 	}
 
-	if conf.UseSharding {
-		dg.ShardID = conf.ShardID
-		dg.ShardCount = conf.ShardCount
+	if configuration.GetEnvConfBool("user_sharding") {
+		dg.ShardID = configuration.GetInteger("shard_id")
+		dg.ShardCount = configuration.GetInteger("shard_count")
 	}
 
 	dg.AddHandler(commandHandler)
@@ -100,15 +100,15 @@ func commandHandler(discord *discordgo.Session, message *discordgo.MessageCreate
 	}
 
 	optionsDB := badgerhold.DefaultOptions
-	optionsDB.Dir = conf.LocalDB
-	optionsDB.ValueDir = conf.LocalDB
+	optionsDB.Dir = configuration.GetEnvConfString("localdb")
+	optionsDB.ValueDir = configuration.GetEnvConfString("localdb")
 	db, err := badgerhold.Open(optionsDB)
 	if err != nil {
 		fmt.Println("Error instance db: ", err)
 	}
 	defer db.Close()
 
-	ctx := roleplay.NewContext(discord, guild, channel, user, message, conf, db, CmdHandler)
+	ctx := roleplay.NewContext(discord, guild, channel, user, message, configuration, db, CmdHandler)
 	ctx.Args = args[1:]
 	c := *command
 	c(*ctx)
@@ -119,7 +119,7 @@ func registerCommands() {
 	CmdHandler.Register("radio", roleplay.RadioCommand, "Gera uma nova frequência para rádio.")
 	CmdHandler.Register("outfit", roleplay.OutfitCommand, "Para listar os outfits de organizações.")
 	CmdHandler.Register("cidades", roleplay.GetCities, "Lista as cidades disponiveis.")
-	CmdHandler.Register("chest", roleplay.ChestCommand, "Contole de itens em baú")
-	CmdHandler.Register("clear", roleplay.ClearChannel, "Limpa as mensagens do canal (Admin)")
+	CmdHandler.Register("chest", roleplay.ChestCommand, "Contole de itens no chest")
+	CmdHandler.Register("clear", roleplay.ClearChannel, "Limpa as mensagens do canal [Admin]")
 	CmdHandler.Register("contato", roleplay.ContactCommand, "Comandos criar um contato")
 }

@@ -3,7 +3,7 @@ package roleplay
 import "fmt"
 
 func LogChestToOwner(ctx Context, message string) {
-	dm, err := ctx.Discord.UserChannelCreate(ctx.Conf.OwnerId)
+	dm, err := ctx.Discord.UserChannelCreate(ctx.Config.GetEnvConfString("OwnerId"))
 	if err != nil {
 		fmt.Println("Erro ao enviar DM: ", err.Error())
 	}
